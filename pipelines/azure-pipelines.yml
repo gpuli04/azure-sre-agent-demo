@@ -4,7 +4,9 @@ trigger:
       - main
 
 pool:
-  vmImage: 'windows-latest'
+  name: 'SRE-Demo'
+  demands:
+    - Agent.Name -equals sre-demo-vm
 
 stages:
 
