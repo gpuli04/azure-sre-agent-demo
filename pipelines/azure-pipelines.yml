@@ -45,7 +45,7 @@ stages:
 
 # ============================================================
 # DEPLOY DEV
-# main -> DEV
+# develop -> DEV
 # ============================================================
 - stage: Deploy_DEV
   displayName: 'Deploy to DEV'
@@ -98,7 +98,7 @@ stages:
 
 # ============================================================
 # DEPLOY QA
-# develop -> QA
+# main -> QA
 # ============================================================
 - stage: Deploy_QA
   displayName: 'Deploy to QA'
@@ -152,7 +152,7 @@ stages:
 
 # ============================================================
 # DEPLOY UAT
-# Release -> UAT
+# release -> UAT
 # ============================================================
 - stage: Deploy_UAT
   displayName: 'Deploy to UAT'
