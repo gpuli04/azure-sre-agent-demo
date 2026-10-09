@@ -1,24 +1,112 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background: #f4f7fb;
+    color: #263238;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Set padding to keep content from hitting the edges */
+/* Main content */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-top: 30px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+/* Navigation */
+.navbar-inverse {
+    background: linear-gradient(135deg, #172554, #2563eb, #4f46e5);
+    border: none;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-nav > li > a {
+    color: #ffffff;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+/* Hero section */
+.hero-section {
+    background: linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed);
+    color: white;
+    padding: 45px;
+    border-radius: 18px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+}
+
+.hero-section h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.hero-section p {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+/* Information cards */
+.info-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px;
+    min-height: 160px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    border-top: 4px solid #2563eb;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.info-card h2 {
+    color: #1e3a8a;
+    font-size: 26px;
+    margin-top: 0;
+}
+
+.info-card p {
+    color: #546e7a;
+    font-size: 16px;
+}
+
+/* Status badge */
+.status-badge {
+    display: inline-block;
+    background: #dcfce7;
+    color: #166534;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Footer */
+footer {
+    margin-top: 45px;
+    padding-top: 20px;
+    color: #78909c;
+    border-top: 1px solid #dbe3ec;
+}
+
+/* Override Bootstrap form width */
 input,
 select,
 textarea {
     max-width: 280px;
+}
+
+/* Bootstrap description list */
+.dl-horizontal dt {
+    white-space: normal;
 }
