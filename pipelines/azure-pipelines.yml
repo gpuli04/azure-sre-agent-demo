@@ -66,8 +66,17 @@ stages:
     - powershell: |
         Import-Module WebAdministration
 
-        Write-Host "Stopping DEV application pool..."
-        Stop-WebAppPool -Name "AzureSreAgentDemo-DEV" -ErrorAction SilentlyContinue
+        Write-Host "Checking DEV application pool status..."
+
+        $poolState = (Get-WebAppPoolState -Name "AzureSreAgentDemo-DEV").Value
+
+        if ($poolState -eq "Started") {
+            Write-Host "DEV application pool is running. Stopping it..."
+            Stop-WebAppPool -Name "AzureSreAgentDemo-DEV"
+        }
+        else {
+            Write-Host "DEV application pool is already stopped. Continuing..."
+        }
 
         Write-Host "Cleaning DEV deployment folder..."
         Remove-Item "C:\inetpub\AzureSreAgentDemo\DEV\*" -Recurse -Force -ErrorAction SilentlyContinue
@@ -108,8 +117,18 @@ stages:
     - powershell: |
         Import-Module WebAdministration
 
-        Write-Host "Stopping QA application pool..."
-        Stop-WebAppPool -Name "AzureSreAgentDemo-QA" -ErrorAction SilentlyContinue
+
+        Write-Host "Checking QA application pool status..."
+
+        $poolState = (Get-WebAppPoolState -Name "AzureSreAgentDemo-QA").Value
+
+        if ($poolState -eq "Started") {
+            Write-Host "QA application pool is running. Stopping it..."
+            Stop-WebAppPool -Name "AzureSreAgentDemo-QA"
+        }
+        else {
+            Write-Host "QA application pool is already stopped. Continuing..."
+        }
 
         Write-Host "Cleaning QA deployment folder..."
         Remove-Item "C:\inetpub\AzureSreAgentDemo\QA\*" -Recurse -Force -ErrorAction SilentlyContinue
@@ -150,8 +169,18 @@ stages:
     - powershell: |
         Import-Module WebAdministration
 
-        Write-Host "Stopping UAT application pool..."
-        Stop-WebAppPool -Name "AzureSreAgentDemo-UAT" -ErrorAction SilentlyContinue
+
+        Write-Host "Checking UAT application pool status..."
+
+        $poolState = (Get-WebAppPoolState -Name "AzureSreAgentDemo-UAT").Value
+
+        if ($poolState -eq "Started") {
+            Write-Host "UAT application pool is running. Stopping it..."
+            Stop-WebAppPool -Name "AzureSreAgentDemo-UAT"
+        }
+        else {
+            Write-Host "UAT application pool is already stopped. Continuing..."
+        }
 
         Write-Host "Cleaning UAT deployment folder..."
         Remove-Item "C:\inetpub\AzureSreAgentDemo\UAT\*" -Recurse -Force -ErrorAction SilentlyContinue
