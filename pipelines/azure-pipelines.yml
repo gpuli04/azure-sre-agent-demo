@@ -1,7 +1,6 @@
-trigger:
-  branches:
-    include:
-      - main
+trigger: none
+
+pr: none
 
 pool:
   name: 'SRE-Demo'
@@ -10,11 +9,16 @@ pool:
 
 stages:
 
+# ============================================================
+# BUILD
+# ============================================================
 - stage: Build
   displayName: 'Build Application'
+
   jobs:
   - job: Build
     displayName: 'Build .NET Framework Application'
+
     steps:
     - checkout: self
 
@@ -39,3 +43,144 @@ stages:
         PathtoPublish: '$(Build.SourcesDirectory)/AzureSreAgentDemo/AzureSreAgentDemo/obj/Release/Package'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+
+
+# ============================================================
+# DEPLOY DEV
+# main -> DEV
+# ============================================================
+- stage: Deploy_DEV
+  displayName: 'Deploy to DEV'
+  dependsOn: Build
+
+  condition: and(
+    succeeded(),
+    eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  )
+
+  jobs:
+  - deployment: DeployDEV
+    displayName: 'Deploy Application to DEV'
+    environment: 'DEV'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - download: current
+            artifact: drop
+
+          - powershell: |
+              Import-Module WebAdministration
+
+              Write-Host "Stopping DEV application pool..."
+              Stop-WebAppPool -Name "AzureSreAgentDemo-DEV"
+
+              Write-Host "Cleaning DEV deployment folder..."
+              Remove-Item "C:\inetpub\AzureSreAgentDemo\DEV\*" -Recurse -Force -ErrorAction SilentlyContinue
+
+              Write-Host "Copying application files..."
+              Copy-Item "$(Pipeline.Workspace)\drop\PackageTmp\*" `
+                        "C:\inetpub\AzureSreAgentDemo\DEV" `
+                        -Recurse -Force
+
+              Write-Host "Starting DEV application pool..."
+              Start-WebAppPool -Name "AzureSreAgentDemo-DEV"
+
+              Write-Host "DEV deployment completed."
+            displayName: 'Deploy to IIS DEV'
+
+
+# ============================================================
+# DEPLOY QA
+# develop -> QA
+# ============================================================
+- stage: Deploy_QA
+  displayName: 'Deploy to QA'
+  dependsOn: Build
+
+  condition: and(
+    succeeded(),
+    eq(variables['Build.SourceBranch'], 'refs/heads/develop')
+  )
+
+  jobs:
+  - deployment: DeployQA
+    displayName: 'Deploy Application to QA'
+    environment: 'QA'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - download: current
+            artifact: drop
+
+          - powershell: |
+              Import-Module WebAdministration
+
+              Write-Host "Stopping QA application pool..."
+              Stop-WebAppPool -Name "AzureSreAgentDemo-QA"
+
+              Write-Host "Cleaning QA deployment folder..."
+              Remove-Item "C:\inetpub\AzureSreAgentDemo\QA\*" -Recurse -Force -ErrorAction SilentlyContinue
+
+              Write-Host "Copying application files..."
+              Copy-Item "$(Pipeline.Workspace)\drop\PackageTmp\*" `
+                        "C:\inetpub\AzureSreAgentDemo\QA" `
+                        -Recurse -Force
+
+              Write-Host "Starting QA application pool..."
+              Start-WebAppPool -Name "AzureSreAgentDemo-QA"
+
+              Write-Host "QA deployment completed."
+            displayName: 'Deploy to IIS QA'
+
+
+# ============================================================
+# DEPLOY UAT
+# Release -> UAT
+# ============================================================
+- stage: Deploy_UAT
+  displayName: 'Deploy to UAT'
+  dependsOn: Build
+
+  condition: and(
+    succeeded(),
+    eq(variables['Build.SourceBranch'], 'refs/heads/Release')
+  )
+
+  jobs:
+  - deployment: DeployUAT
+    displayName: 'Deploy Application to UAT'
+    environment: 'UAT'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - download: current
+            artifact: drop
+
+          - powershell: |
+              Import-Module WebAdministration
+
+              Write-Host "Stopping UAT application pool..."
+              Stop-WebAppPool -Name "AzureSreAgentDemo-UAT"
+
+              Write-Host "Cleaning UAT deployment folder..."
+              Remove-Item "C:\inetpub\AzureSreAgentDemo\UAT\*" -Recurse -Force -ErrorAction SilentlyContinue
+
+              Write-Host "Copying application files..."
+              Copy-Item "$(Pipeline.Workspace)\drop\PackageTmp\*" `
+                        "C:\inetpub\AzureSreAgentDemo\UAT" `
+                        -Recurse -Force
+
+              Write-Host "Starting UAT application pool..."
+              Start-WebAppPool -Name "AzureSreAgentDemo-UAT"
+
+              Write-Host "UAT deployment completed."
+            displayName: 'Deploy to IIS UAT'
