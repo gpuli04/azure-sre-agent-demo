@@ -53,10 +53,7 @@ stages:
   displayName: 'Deploy to DEV'
   dependsOn: Build
 
-  condition: and(
-    succeeded(),
-    eq(variables['Build.SourceBranch'], 'refs/heads/main')
-  )
+  condition: "and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))"
 
   jobs:
   - deployment: DeployDEV
@@ -100,10 +97,7 @@ stages:
   displayName: 'Deploy to QA'
   dependsOn: Build
 
-  condition: and(
-    succeeded(),
-    eq(variables['Build.SourceBranch'], 'refs/heads/develop')
-  )
+  condition: "and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))"
 
   jobs:
   - deployment: DeployQA
@@ -147,10 +141,7 @@ stages:
   displayName: 'Deploy to UAT'
   dependsOn: Build
 
-  condition: and(
-    succeeded(),
-    eq(variables['Build.SourceBranch'], 'refs/heads/Release')
-  )
+  condition: "and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/Release'))"
 
   jobs:
   - deployment: DeployUAT
