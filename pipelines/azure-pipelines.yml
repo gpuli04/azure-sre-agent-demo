@@ -77,6 +77,9 @@ stages:
                   "C:\inetpub\AzureSreAgentDemo\DEV" `
                   -Recurse -Force
 
+        Write-Host "Waiting for IIS application pool to stop..."
+        Start-Sleep -Seconds 10
+
         Write-Host "Starting DEV application pool..."
         Start-WebAppPool -Name "AzureSreAgentDemo-DEV"
 
@@ -116,6 +119,9 @@ stages:
                   "C:\inetpub\AzureSreAgentDemo\QA" `
                   -Recurse -Force
 
+        Write-Host "Waiting for IIS application pool to stop..."
+        Start-Sleep -Seconds 10
+
         Write-Host "Starting QA application pool..."
         Start-WebAppPool -Name "AzureSreAgentDemo-QA"
 
@@ -154,6 +160,9 @@ stages:
         Copy-Item "$(Pipeline.Workspace)\drop\PackageTmp\*" `
                   "C:\inetpub\AzureSreAgentDemo\UAT" `
                   -Recurse -Force
+
+        Write-Host "Waiting for IIS application pool to stop..."
+        Start-Sleep -Seconds 10
 
         Write-Host "Starting UAT application pool..."
         Start-WebAppPool -Name "AzureSreAgentDemo-UAT"
