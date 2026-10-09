@@ -67,7 +67,7 @@ stages:
         Import-Module WebAdministration
 
         Write-Host "Stopping DEV application pool..."
-        Stop-WebAppPool -Name "AzureSreAgentDemo-DEV"
+        Stop-WebAppPool -Name "AzureSreAgentDemo-DEV" -ErrorAction SilentlyContinue
 
         Write-Host "Cleaning DEV deployment folder..."
         Remove-Item "C:\inetpub\AzureSreAgentDemo\DEV\*" -Recurse -Force -ErrorAction SilentlyContinue
@@ -109,7 +109,7 @@ stages:
         Import-Module WebAdministration
 
         Write-Host "Stopping QA application pool..."
-        Stop-WebAppPool -Name "AzureSreAgentDemo-QA"
+        Stop-WebAppPool -Name "AzureSreAgentDemo-QA" -ErrorAction SilentlyContinue
 
         Write-Host "Cleaning QA deployment folder..."
         Remove-Item "C:\inetpub\AzureSreAgentDemo\QA\*" -Recurse -Force -ErrorAction SilentlyContinue
@@ -151,7 +151,7 @@ stages:
         Import-Module WebAdministration
 
         Write-Host "Stopping UAT application pool..."
-        Stop-WebAppPool -Name "AzureSreAgentDemo-UAT"
+        Stop-WebAppPool -Name "AzureSreAgentDemo-UAT" -ErrorAction SilentlyContinue
 
         Write-Host "Cleaning UAT deployment folder..."
         Remove-Item "C:\inetpub\AzureSreAgentDemo\UAT\*" -Recurse -Force -ErrorAction SilentlyContinue
